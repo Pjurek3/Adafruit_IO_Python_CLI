@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "adafruit-io-python-cli"
+name = "adafruit_io_cli"
 version = "0.0.1"
 description = "CLI for the adafruit IO API and python client"
 authors = ["Paul <pjurek3@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "adafruit_io_python_cli"}]
+packages = [{include = "adafruit_io_cli"}]
 
 [tool.poetry.scripts]
 ada = "adafruit_io_cli.main:app"
@@ -15,6 +15,7 @@ python = "^3.9"
 typer = {extras = ["all"], version = "^0.7.0"}
 rich = "^12.6.0"
 httpx = "^0.23.1"
+python-dotenv = "^0.21.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
