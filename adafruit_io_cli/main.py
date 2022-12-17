@@ -1,11 +1,15 @@
 import typer
 import dotenv
+import rich
+from rich.console import Console
 import requests
 import os
 
 dotenv.load_dotenv()
 
 app = typer.Typer()
+
+console = rich.console.Console()
 
 def get_feed_data(feed:str):
     """returns the feeddata from online"""
@@ -42,9 +46,11 @@ def stats():
     """
     Shoot the portal gun
     """
+    with console.status("[bold green]Getting Data...") as status:
+        temperature_data = get_temperature_data()
+        humidity_data = get_humidity_data()
 
-    temperature_data = get_temperature_data()
-    humidity_data = get_humidity_data()
+        
     print(f'Readings at {temperature_data["timestamp"]}')
     print('-------------------------------------------------------')
     print(f'temperature: {float(temperature_data["value"]):.1f} C')
