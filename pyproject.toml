@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "adafruit_io_cli"
-version = "0.0.2"
+version = "0.0.3"
 description = "CLI for the adafruit IO API and python client"
 authors = ["Paul <pjurek3@gmail.com>"]
 license = "MIT"
@@ -11,15 +11,19 @@ packages = [{include = "adafruit_io_cli"}]
 ada = "adafruit_io_cli.main:app"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8.1"
 typer = {extras = ["all"], version = "^0.7.0"}
 rich = "^12.6.0"
 httpx = "^0.23.1"
 python-dotenv = "^0.21.0"
+requests = "^2.28.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
 pytest-benchmark = "^4.0.0"
+black = "^22.12.0"
+flake8 = "^6.0.0"
+pre-commit = "^2.20.0"
 
 [build-system]
 requires = ["poetry-core"]
