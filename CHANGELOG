@@ -1,0 +1,7 @@
+## V0.0.2
+- updated time in backend to be datetime rather than string
+- offset timezone from UTC to Pacific NW
+- added air quality measure to the results
+
+## V0.0.1
+- initial release
