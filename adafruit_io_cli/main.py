@@ -1,10 +1,11 @@
-import typer
 import datetime
-import dotenv
-import rich
-from rich.console import Console
-import requests
 import os
+
+import dotenv
+import requests
+import rich
+import typer
+from rich.console import Console
 
 dotenv.load_dotenv()
 
