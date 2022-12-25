@@ -1,6 +1,7 @@
 ## V0.0.3
 - updated dependencies
 - added dev dependencies
+- added pre-commit
 
 ## V0.0.2
 - updated time in backend to be datetime rather than string
