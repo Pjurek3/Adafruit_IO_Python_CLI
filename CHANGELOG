@@ -2,6 +2,7 @@
 - updated dependencies
 - added dev dependencies
 - added pre-commit
+- updated outputs to render as table
 
 ## V0.0.2
 - updated time in backend to be datetime rather than string
