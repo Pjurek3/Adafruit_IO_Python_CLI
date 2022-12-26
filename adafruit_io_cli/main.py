@@ -32,6 +32,7 @@ def get_feed_data(feed: str):
 
     return {"timestamp": seattle_time, "value": r.json()["value"]}
 
+
 def get_full_feed_data(feed: str):
     """returns the feeddata from online"""
     key = os.environ["ADAFRUIT_IO_KEY"]
@@ -45,8 +46,12 @@ def get_full_feed_data(feed: str):
 
     # set limit to 1000 so we get full data if possible
     # this is current limit of the API
-    start_time = (datetime.datetime.utcnow() - datetime.timedelta(hours=8)).strftime(date_format)
-    r = requests.get(url, headers=headers, params={'limit': 1000, 'start_time': start_time})
+    start_time = (datetime.datetime.utcnow() - datetime.timedelta(hours=8)).strftime(
+        date_format
+    )
+    r = requests.get(
+        url, headers=headers, params={"limit": 1000, "start_time": start_time}
+    )
 
     # this section formats time to the Seattle time.  Expected time from the
     # data feed is UTC
@@ -55,7 +60,12 @@ def get_full_feed_data(feed: str):
     results = []
     for record in query_data:
         utc_time = datetime.datetime.strptime(record["created_at"], date_format)
-        results.append({'timestamp': utc_time - datetime.timedelta(hours=8), 'value': float(record['value'])})
+        results.append(
+            {
+                "timestamp": utc_time - datetime.timedelta(hours=8),
+                "value": float(record["value"]),
+            }
+        )
 
     return results
 
