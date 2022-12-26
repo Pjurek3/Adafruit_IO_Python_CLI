@@ -2,6 +2,7 @@
 - updated dependencies
 - added dev dependencies
 - added pre-commit
+- added performance testing for getting stats
 
 ## V0.0.2
 - updated time in backend to be datetime rather than string
