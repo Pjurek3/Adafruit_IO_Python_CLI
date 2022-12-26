@@ -6,6 +6,7 @@ import requests
 import rich
 import typer
 from rich.console import Console
+from rich.table import Table
 
 dotenv.load_dotenv()
 
@@ -32,6 +33,7 @@ def get_feed_data(feed: str):
 
     return {"timestamp": seattle_time, "value": r.json()["value"]}
 
+
 def get_full_feed_data(feed: str):
     """returns the feeddata from online"""
     key = os.environ["ADAFRUIT_IO_KEY"]
@@ -45,8 +47,12 @@ def get_full_feed_data(feed: str):
 
     # set limit to 1000 so we get full data if possible
     # this is current limit of the API
-    start_time = (datetime.datetime.utcnow() - datetime.timedelta(hours=8)).strftime(date_format)
-    r = requests.get(url, headers=headers, params={'limit': 1000, 'start_time': start_time})
+    start_time = (datetime.datetime.utcnow() - datetime.timedelta(hours=8)).strftime(
+        date_format
+    )
+    r = requests.get(
+        url, headers=headers, params={"limit": 1000, "start_time": start_time}
+    )
 
     # this section formats time to the Seattle time.  Expected time from the
     # data feed is UTC
@@ -55,7 +61,12 @@ def get_full_feed_data(feed: str):
     results = []
     for record in query_data:
         utc_time = datetime.datetime.strptime(record["created_at"], date_format)
-        results.append({'timestamp': utc_time - datetime.timedelta(hours=8), 'value': float(record['value'])})
+        results.append(
+            {
+                "timestamp": utc_time - datetime.timedelta(hours=8),
+                "value": float(record["value"]),
+            }
+        )
 
     return results
 
@@ -112,12 +123,15 @@ def stats():
         aq100 = get_air_quality_pm100_data()
 
     print(f'Readings at {temperature_data["timestamp"]}')
-    print("-------------------------------------------------------")
-    print(f'temperature: {float(temperature_data["value"]):.1f} C')
-    print(f'humidity: {float(humidity_data["value"]):.1f} %')
-    print()
-    print(f'Air Quality Readings at {aq10["timestamp"]}')
-    print("-------------------------------------------------------")
-    print(f'pm10: {float(aq10["value"])}')
-    print(f'pm25: {float(aq25["value"])}')
-    print(f'pm100: {float(aq100["value"])}')
+
+    table = Table()
+    table.add_column("measure", justify="right")
+    table.add_column("value")
+
+    table.add_row("temperature", f'{float(temperature_data["value"]):.1f} C')
+    table.add_row("humidity", f'{float(humidity_data["value"]):.1f} %')
+    table.add_row("pm10", str(float(aq10["value"])))
+    table.add_row("pm25", str(float(aq25["value"])))
+    table.add_row("pm100", str(float(aq100["value"])))
+
+    console.print(table)
