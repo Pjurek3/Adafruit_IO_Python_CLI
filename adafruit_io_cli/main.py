@@ -14,6 +14,20 @@ app = typer.Typer()
 
 console = rich.console.Console()
 
+date_format = "%Y-%m-%dT%H:%M:%SZ"
+
+
+def date_diff(d1: str) -> int:
+    """returns number of minutes between dates.
+    The date input is compared with current date.  Expected date
+    is to be input in UTC"""
+    if not isinstance(d1, datetime.datetime):
+        d1 = datetime.datetime.strptime(d1, date_format)
+    d2 = datetime.datetime.now()
+    delta = d2 - d1
+
+    return delta.days * 24 * 60 + int(delta.seconds / 60)
+
 
 def get_feed_data(feed: str):
     """returns the feeddata from online"""
@@ -27,7 +41,7 @@ def get_feed_data(feed: str):
 
     # this section formats time to the Seattle time.  Expected time from the
     # data feed is UTC
-    date_format = "%Y-%m-%dT%H:%M:%SZ"
+
     utc_time = datetime.datetime.strptime(r.json()["created_at"], date_format)
     seattle_time = utc_time - datetime.timedelta(hours=8)
 
@@ -38,9 +52,6 @@ def get_full_feed_data(feed: str):
     """returns the feeddata from online"""
     key = os.environ["ADAFRUIT_IO_KEY"]
     user = os.environ["ADAFRUIT_IO_USERNAME"]
-
-    # used for converting the iso datetime
-    date_format = "%Y-%m-%dT%H:%M:%SZ"
 
     headers = {"X-AIO-Key": key}
     url = f"https://io.adafruit.com/api/v2/{user}/feeds/{feed}/data"
@@ -56,7 +67,7 @@ def get_full_feed_data(feed: str):
 
     # this section formats time to the Seattle time.  Expected time from the
     # data feed is UTC
-    date_format = "%Y-%m-%dT%H:%M:%SZ"
+
     query_data = r.json()
     results = []
     for record in query_data:
@@ -123,10 +134,15 @@ def stats():
         aq100 = get_air_quality_pm100_data()
 
     print(f'Readings at {temperature_data["timestamp"]}')
+    print(
+        f'Minutes since last reading: {date_diff(temperature_data["timestamp"])} minutes'
+    )
 
     table = Table()
     table.add_column("measure", justify="right")
     table.add_column("value")
+    table.add_column("min-value")
+    table.add_column("max-value")
 
     table.add_row("temperature", f'{float(temperature_data["value"]):.1f} C')
     table.add_row("humidity", f'{float(humidity_data["value"]):.1f} %')
