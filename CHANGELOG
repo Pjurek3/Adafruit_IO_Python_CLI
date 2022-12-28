@@ -2,6 +2,9 @@
 - updated dependencies
 - added dev dependencies
 - added pre-commit
+- updated outputs to render as table
+- updated outputs to show delta time in minutes since last reading
+- added async stats method to the app
 
 ## V0.0.2
 - updated time in backend to be datetime rather than string
